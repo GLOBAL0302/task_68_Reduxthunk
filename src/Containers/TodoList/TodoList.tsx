@@ -13,7 +13,7 @@ import { useEffect } from 'react';
 const TodoList = () => {
   const dispatch = useDispatch<AppDispatch>();
   const todoItems = useSelector<RootState>((state) => state.todo.todoItems);
-  const isLoading = useSelector<RootState>((state) => state.todo.isLoading);
+
 
   useEffect(() => {
     dispatch(fetchTodoThunk());
