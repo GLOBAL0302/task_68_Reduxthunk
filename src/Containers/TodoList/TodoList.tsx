@@ -9,7 +9,7 @@ import { useEffect } from 'react';
 
 
 const TodoList = () => {
-  const dispatch:AppDispatch = useDispatch()
+  const dispatch = useDispatch<AppDispatch>()
   const todoItems = useSelector<RootState>(state=>state.todo.todoItems)
   const isLoading = useSelector<RootState>(state => state.todo.isLoading)
 

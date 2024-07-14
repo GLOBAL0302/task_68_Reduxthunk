@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAction, createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axiosApi from '../../axiosApi.ts';
 
 interface TodoState{
@@ -15,13 +15,14 @@ const initialState:TodoState = {
 export const fetchTodoThunk = createAsyncThunk("todo/fetch", async()=>{
   let {data} = await axiosApi.get("/todo.json");
   if(data){
-    return Object
-      .keys(data).map(id => ({
+    const todoItems = Object
+      .keys(data).map(id=>({
         ...data[id],
         id
       }))
+    return todoItems;
   }
-  return
+  return;
 });
 
 export const todoSlice = createSlice({
@@ -47,11 +48,11 @@ export const todoSlice = createSlice({
     }
   },
   extraReducers:(builder)=>{
-    builder.addCase(fetchTodoThunk.pending, (state:TodoState)=>{
+    builder.addCase(fetchTodoThunk.pending, (state)=>{
       state.isLoading = true
       state.error = false
     })
-    builder.addCase(fetchTodoThunk.fulfilled, (state:TodoState, action)=>{
+    builder.addCase(fetchTodoThunk.fulfilled, (state, action)=>{
       state.isLoading = false
       state.todoItems = action.payload
     })
