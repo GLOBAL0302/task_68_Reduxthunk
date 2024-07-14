@@ -1,9 +1,9 @@
-interface IToDoItem{
-  title:string
-  status: boolean
-  id:string
+interface IToDoItem {
+  title: string;
+  status: boolean;
+  id: string;
 }
 
-interface IToDoItemApi{
-  [string:string]:string | boolean
+interface IToDoItemApi {
+  [string: string]: string | boolean;
 }

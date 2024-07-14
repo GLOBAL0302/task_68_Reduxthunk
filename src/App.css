@@ -2,11 +2,10 @@
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
-
 }
 
-body{
-  background-image: url("https://images.pexels.com/photos/633409/pexels-photo-633409.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1");
+body {
+  background-image: url('https://images.pexels.com/photos/633409/pexels-photo-633409.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
   background-size: cover;
   background-repeat: no-repeat;
   height: 100vh;

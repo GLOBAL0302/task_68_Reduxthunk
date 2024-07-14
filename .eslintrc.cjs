@@ -14,7 +14,7 @@ module.exports = {
       'warn',
       { allowConstantExport: true },
     ],
-    "semi":["error"],
-    "react-hooks/exhaustive-deps": "error",
+    semi: ['error'],
+    'react-hooks/exhaustive-deps': 'error',
   },
-}
+};
