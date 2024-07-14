@@ -1,19 +1,22 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../Redux/store.ts';
+import { AppDispatch, RootState } from '../../Redux/store.ts';
 import { Checkbox } from 'antd';
 import { DeleteTwoTone } from '@ant-design/icons';
-import { changeStatus, deleteToDoItem } from '../../Redux/ReduxSlices/todoSlice.ts';
+import { changeStatus, deleteToDoItem, fetchTodoThunk } from '../../Redux/ReduxSlices/todoSlice.ts';
 import TaskForm from '../../components/TaskForm/TaskForm.tsx';
-
+import { useEffect } from 'react';
 
 
 
 const TodoList = () => {
-  const dispatch = useDispatch()
+  const dispatch:AppDispatch = useDispatch()
   const todoItems = useSelector<RootState>(state=>state.todo.todoItems)
+  const isLoading = useSelector<RootState>(state => state.todo.isLoading)
 
 
-  console.log(todoItems);
+  useEffect( () => {
+    dispatch(fetchTodoThunk())
+  }, [dispatch]);
   return (
     <div className="border-5 border p-5">
       <h1>My TodoList</h1>

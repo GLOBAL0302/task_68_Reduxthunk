@@ -1,4 +1,5 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import axiosApi from '../../axiosApi.ts';
 
 interface TodoState{
   todoItems:IToDoItem[],
@@ -6,10 +7,22 @@ interface TodoState{
   error:boolean
 }
 const initialState:TodoState = {
-  todoItems:[{title:"False Status", status:false, id:"123"}, {title:"True Status", status:true, id:"321"}],
+  todoItems:[],
   isLoading:false,
   error:false
 }
+
+export const fetchTodoThunk = createAsyncThunk("todo/fetch", async()=>{
+  let {data} = await axiosApi.get("/todo.json");
+  if(data){
+    return Object
+      .keys(data).map(id => ({
+        ...data[id],
+        id
+      }))
+  }
+  return
+});
 
 export const todoSlice = createSlice({
   name: "todo",
@@ -32,6 +45,20 @@ export const todoSlice = createSlice({
         }
       })
     }
+  },
+  extraReducers:(builder)=>{
+    builder.addCase(fetchTodoThunk.pending, (state:TodoState)=>{
+      state.isLoading = true
+      state.error = false
+    })
+    builder.addCase(fetchTodoThunk.fulfilled, (state:TodoState, action)=>{
+      state.isLoading = false
+      state.todoItems = action.payload
+    })
+    builder.addCase(fetchTodoThunk.rejected, (state:TodoState)=>{
+      state.isLoading =false
+      state.error = true;
+    })
   }
 });
 
