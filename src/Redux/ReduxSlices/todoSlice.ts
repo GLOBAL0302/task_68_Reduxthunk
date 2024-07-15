@@ -93,7 +93,7 @@ export const todoSlice = createSlice({
     });
     builder.addCase(
       deleteTodoListThunk.fulfilled,
-      (state: TodoState, action) => {
+      (state: TodoState) => {
         state.isLoadingDelete = false;
       },
     );
@@ -106,7 +106,7 @@ export const todoSlice = createSlice({
       state.isLoadingStatus = true;
       state.error = false;
     });
-    builder.addCase(changeStatusThunk.fulfilled, (state: TodoState, action) => {
+    builder.addCase(changeStatusThunk.fulfilled, (state: TodoState) => {
       state.isLoadingStatus = false;
     });
     builder.addCase(changeStatusThunk.rejected, (state: TodoState) => {
