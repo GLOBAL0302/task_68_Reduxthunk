@@ -3,8 +3,8 @@ import { AppDispatch, RootState } from '../../Redux/store.ts';
 import { Checkbox } from 'antd';
 import { DeleteTwoTone } from '@ant-design/icons';
 import {
-  changeStatus, changeStatusThunk,
-  deleteToDoItem, deleteTodoListThunk,
+  changeStatusThunk,
+  deleteTodoListThunk,
   fetchTodoThunk,
 } from '../../Redux/ReduxSlices/todoSlice.ts';
 import TaskForm from '../../components/TaskForm/TaskForm.tsx';
@@ -14,20 +14,19 @@ const TodoList = () => {
   const dispatch = useDispatch<AppDispatch>();
   const todoItems = useSelector<RootState>((state) => state.todo.todoItems);
 
-
   useEffect(() => {
     dispatch(fetchTodoThunk());
   }, [dispatch, todoItems]);
 
-  const deleteTodoItem = async (id)=>{
+  const deleteTodoItem = async (id) => {
     await dispatch(deleteTodoListThunk(id));
-    await dispatch(fetchTodoThunk())
-  }
+    await dispatch(fetchTodoThunk());
+  };
 
-  const changeItemList = async (value)=>{
-    await dispatch(changeStatusThunk(value))
-    await dispatch(fetchTodoThunk())
-  }
+  const changeItemList = async (value) => {
+    await dispatch(changeStatusThunk(value));
+    await dispatch(fetchTodoThunk());
+  };
 
   return (
     <div className="border-5 border p-5">
@@ -41,8 +40,7 @@ const TodoList = () => {
             <Checkbox
               className="ms-auto me-3"
               checked={item.status}
-              onChange={()=>changeItemList(item)}
-              // onChange={() => dispatch(changeStatus(item.id))}
+              onChange={() => changeItemList(item)}
             />
 
             <DeleteTwoTone

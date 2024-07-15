@@ -1,10 +1,9 @@
-
-export interface IUserInput{
+export interface IUserInput {
   title: string;
   status: boolean;
 }
 
-export interface IToDoItem extends IUserInput{
+export interface IToDoItem extends IUserInput {
   id: string;
 }
 
