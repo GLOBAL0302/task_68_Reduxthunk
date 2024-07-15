@@ -1,16 +1,25 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { addTodoListThunk, fetchTodoThunk } from '../../Redux/ReduxSlices/todoSlice';
+import { AppDispatch } from '../../Redux/store';
+
 
 const TaskForm = () => {
+  const dispatch:AppDispatch = useDispatch()
   const [userInput, setUserInput] = useState('');
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUserInput(event.target.value);
   };
 
-  const onFormSubmit = (event: React.FormEvent) => {
+  const onFormSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    console.log(userInput);
+    await dispatch(addTodoListThunk(userInput))
+    dispatch(fetchTodoThunk())
+    setUserInput("")
   };
+
+
   return (
     <>
       <form onSubmit={onFormSubmit}>
@@ -23,6 +32,7 @@ const TaskForm = () => {
             Button
           </button>
           <input
+            value={userInput}
             onChange={onChange}
             type="text"
             className="form-control"
@@ -31,7 +41,8 @@ const TaskForm = () => {
             aria-describedby="button-addon1"
           />
         </div>
-        <button type="submit">Add New Task</button>
+        <button
+          type="submit">Add New Task</button>
       </form>
     </>
   );

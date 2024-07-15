@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axiosApi from '../../axiosApi.ts';
+import { IToDoItem, IUserInput } from '../../types';
 
 interface TodoState {
   todoItems: IToDoItem[];
@@ -22,6 +23,12 @@ export const fetchTodoThunk = createAsyncThunk<IToDoItem[]>('todo/fetch', async 
   }
   return;
 });
+
+export const addTodoListThunk = createAsyncThunk("todo/addTodoList", async(_arg:string, thunkAPI)=>{
+  const newPost = {title:_arg, status: false}
+  await axiosApi.post("/todo.json", newPost);
+  return
+})
 
 export const todoSlice = createSlice({
   name: 'todo',

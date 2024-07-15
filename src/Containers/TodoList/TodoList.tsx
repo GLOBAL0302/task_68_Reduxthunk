@@ -18,6 +18,8 @@ const TodoList = () => {
   useEffect(() => {
     dispatch(fetchTodoThunk());
   }, [dispatch]);
+
+
   return (
     <div className="border-5 border p-5">
       <h1>My TodoList</h1>
