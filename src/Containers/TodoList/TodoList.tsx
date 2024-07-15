@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../Redux/store.ts';
 import { Badge, Checkbox, Spin } from 'antd';
 
-import { DeleteTwoTone, FileDoneOutlined } from '@ant-design/icons';
+import { DeleteTwoTone} from '@ant-design/icons';
 import {
   changeStatusThunk,
   deleteTodoListThunk,
