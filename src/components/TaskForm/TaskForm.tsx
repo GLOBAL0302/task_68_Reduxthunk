@@ -35,6 +35,7 @@ const TaskForm = () => {
             Task Title
           </button>
           <input
+            required
             value={userInput}
             onChange={onChange}
             type="text"

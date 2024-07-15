@@ -1,8 +1,8 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../Redux/store.ts';
-import { Checkbox, Spin } from 'antd';
+import { Badge, Checkbox, Spin } from 'antd';
 
-import { DeleteTwoTone } from '@ant-design/icons';
+import { DeleteTwoTone, FileDoneOutlined } from '@ant-design/icons';
 import {
   changeStatusThunk,
   deleteTodoListThunk,
@@ -37,7 +37,11 @@ const TodoList = () => {
 
   return (
     <div className="border-5 border p-5">
-      <h1>My TodoList</h1>
+        <h1>My TodoList</h1>
+      <div className="d-flex justify-content-between">
+        <p>Completed <Badge color="green" count={todoItems.filter((item)=> item.status === true).length}/></p>
+        <p>Uncompleted <Badge count={todoItems.filter((item)=> item.status === false).length}/></p>
+      </div>
       <div className="d-flex flex-column gap-2 mb-4">
         {todoItems.map((item) => (
           <div className="border border-2 p-4 d-flex" key={item.id}>
