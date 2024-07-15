@@ -4,13 +4,17 @@ import { IToDoItem } from '../../types';
 
 interface TodoState {
   todoItems: IToDoItem[];
-  isLoading: boolean;
   error: boolean;
+  isLoadingSubmit: boolean;
+  isLoadingDelete: boolean;
+  isLoadingStatus: boolean;
 }
 const initialState: TodoState = {
   todoItems: [],
-  isLoading: false,
   error: false,
+  isLoadingSubmit: false,
+  isLoadingDelete: false,
+  isLoadingStatus: false,
 };
 
 export const fetchTodoThunk = createAsyncThunk<IToDoItem[]>(
@@ -71,15 +75,42 @@ export const todoSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(fetchTodoThunk.pending, (state: TodoState) => {
-      state.isLoading = true;
+      state.isLoadingSubmit = true;
       state.error = false;
     });
     builder.addCase(fetchTodoThunk.fulfilled, (state: TodoState, action) => {
-      state.isLoading = false;
+      state.isLoadingSubmit = false;
       state.todoItems = action.payload;
     });
     builder.addCase(fetchTodoThunk.rejected, (state: TodoState) => {
-      state.isLoading = false;
+      state.isLoadingSubmit = false;
+      state.error = true;
+    });
+
+    builder.addCase(deleteTodoListThunk.pending, (state: TodoState) => {
+      state.isLoadingDelete = true;
+      state.error = false;
+    });
+    builder.addCase(
+      deleteTodoListThunk.fulfilled,
+      (state: TodoState, action) => {
+        state.isLoadingDelete = false;
+      },
+    );
+    builder.addCase(deleteTodoListThunk.rejected, (state: TodoState) => {
+      state.isLoadingDelete = false;
+      state.error = true;
+    });
+
+    builder.addCase(changeStatusThunk.pending, (state: TodoState) => {
+      state.isLoadingStatus = true;
+      state.error = false;
+    });
+    builder.addCase(changeStatusThunk.fulfilled, (state: TodoState, action) => {
+      state.isLoadingStatus = false;
+    });
+    builder.addCase(changeStatusThunk.rejected, (state: TodoState) => {
+      state.isLoadingStatus = false;
       state.error = true;
     });
   },

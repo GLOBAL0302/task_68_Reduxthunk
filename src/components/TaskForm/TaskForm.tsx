@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   addTodoListThunk,
   fetchTodoThunk,
 } from '../../Redux/ReduxSlices/todoSlice';
 import { AppDispatch } from '../../Redux/store';
+import { Button, Spin } from 'antd';
 
 const TaskForm = () => {
   const dispatch: AppDispatch = useDispatch();
+  const isLoading = useSelector((state) => state.todo.isLoadingSubmit);
   const [userInput, setUserInput] = useState('');
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -42,9 +44,10 @@ const TaskForm = () => {
             aria-describedby="button-addon1"
           />
         </div>
-        <button className="ms-auto" type="submit">
-          AddTask
-        </button>
+        <Button disabled={isLoading} htmlType="submit">
+          {isLoading ? <Spin /> : ''}
+          Add Task
+        </Button>
       </form>
     </>
   );

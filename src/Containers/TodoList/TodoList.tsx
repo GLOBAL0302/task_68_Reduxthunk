@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../Redux/store.ts';
-import { Checkbox } from 'antd';
+import { Checkbox, Spin } from 'antd';
+
 import { DeleteTwoTone } from '@ant-design/icons';
 import {
   changeStatusThunk,
@@ -13,10 +14,16 @@ import { useEffect } from 'react';
 const TodoList = () => {
   const dispatch = useDispatch<AppDispatch>();
   const todoItems = useSelector<RootState>((state) => state.todo.todoItems);
+  const isLoadingDelete = useSelector<RootState>(
+    (state) => state.todo.isLoadingDelete,
+  );
+  const isLoadingStatus = useSelector<RootState>(
+    (state) => state.todo.isLoadingStatus,
+  );
 
   useEffect(() => {
     dispatch(fetchTodoThunk());
-  }, [dispatch, todoItems]);
+  }, [dispatch]);
 
   const deleteTodoItem = async (id) => {
     await dispatch(deleteTodoListThunk(id));
@@ -37,17 +44,24 @@ const TodoList = () => {
             <span>
               <strong>Title:</strong> {item.title}
             </span>
-            <Checkbox
-              className="ms-auto me-3"
-              checked={item.status}
-              onChange={() => changeItemList(item)}
-            />
-
-            <DeleteTwoTone
-              style={{ cursor: 'pointer' }}
-              twoToneColor="#eb2f96"
-              onClick={() => deleteTodoItem(item.id)}
-            />
+            {isLoadingStatus ? (
+              <Spin className="ms-auto me-3" />
+            ) : (
+              <Checkbox
+                className="ms-auto me-3"
+                checked={item.status}
+                onChange={() => changeItemList(item)}
+              />
+            )}
+            {isLoadingDelete ? (
+              <Spin />
+            ) : (
+              <DeleteTwoTone
+                style={{ cursor: 'pointer' }}
+                twoToneColor="#eb2f96"
+                onClick={() => deleteTodoItem(item.id)}
+              />
+            )}
           </div>
         ))}
       </div>
