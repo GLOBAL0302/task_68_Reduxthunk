@@ -3,8 +3,8 @@ import { AppDispatch, RootState } from '../../Redux/store.ts';
 import { Checkbox } from 'antd';
 import { DeleteTwoTone } from '@ant-design/icons';
 import {
-  changeStatus,
-  deleteToDoItem,
+  changeStatus, changeStatusThunk,
+  deleteToDoItem, deleteTodoListThunk,
   fetchTodoThunk,
 } from '../../Redux/ReduxSlices/todoSlice.ts';
 import TaskForm from '../../components/TaskForm/TaskForm.tsx';
@@ -17,8 +17,17 @@ const TodoList = () => {
 
   useEffect(() => {
     dispatch(fetchTodoThunk());
-  }, [dispatch]);
+  }, [dispatch, todoItems]);
 
+  const deleteTodoItem = async (id)=>{
+    await dispatch(deleteTodoListThunk(id));
+    await dispatch(fetchTodoThunk())
+  }
+
+  const changeItemList = async (value)=>{
+    await dispatch(changeStatusThunk(value))
+    await dispatch(fetchTodoThunk())
+  }
 
   return (
     <div className="border-5 border p-5">
@@ -32,12 +41,14 @@ const TodoList = () => {
             <Checkbox
               className="ms-auto me-3"
               checked={item.status}
-              onChange={() => dispatch(changeStatus(item.id))}
+              onChange={()=>changeItemList(item)}
+              // onChange={() => dispatch(changeStatus(item.id))}
             />
+
             <DeleteTwoTone
               style={{ cursor: 'pointer' }}
               twoToneColor="#eb2f96"
-              onClick={() => dispatch(deleteToDoItem(item.id))}
+              onClick={() => deleteTodoItem(item.id)}
             />
           </div>
         ))}

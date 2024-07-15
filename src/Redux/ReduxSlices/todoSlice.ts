@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axiosApi from '../../axiosApi.ts';
-import { IToDoItem} from '../../types';
+import { IToDoItem, IUserInput } from '../../types';
 
 interface TodoState {
   todoItems: IToDoItem[];
@@ -21,12 +21,23 @@ export const fetchTodoThunk = createAsyncThunk<IToDoItem[]>('todo/fetch', async 
       id,
     }));
   }
-  return;
+  return [];
 });
 
 export const addTodoListThunk = createAsyncThunk("todo/addTodoList", async(_arg:string)=>{
   const newPost = {title:_arg, status: false}
   await axiosApi.post("/todo.json", newPost);
+  return
+})
+
+export const deleteTodoListThunk = createAsyncThunk("todo/deleteTodoItem", async(_arg:string)=>{
+  await axiosApi.delete(`/todo/${_arg}.json`)
+  return
+})
+
+export const changeStatusThunk = createAsyncThunk("todo/changeStatus", async(_arg:IToDoItem, thunkAPI)=>{
+  const changedTodoList = {..._arg, status: !_arg.status}
+  await axiosApi.put(`/todo/${_arg.id}.json`, changedTodoList )
   return
 })
 
@@ -45,13 +56,13 @@ export const todoSlice = createSlice({
         return item;
       });
     },
-    deleteToDoItem: (state, action: PayloadAction<string>) => {
-      state.todoItems = state.todoItems.filter((item) => {
-        if (item.id !== action.payload) {
-          return item;
-        }
-      });
-    },
+    // deleteToDoItem: (state, action: PayloadAction<string>) => {
+    //   state.todoItems = state.todoItems.filter((item) => {
+    //     if (item.id !== action.payload) {
+    //       return item;
+    //     }
+    //   });
+    // },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchTodoThunk.pending, (state: TodoState) => {
